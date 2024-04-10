@@ -1,7 +1,7 @@
 param($fileName = "c:\users\dmarkle\downloads\All Contacts.vcf")
 
 function New-Card {
-    return [PSCustomObject][ordered]@{'Full Name'="";'Categories'='';'Organization'='';'Address'='';'Phone1'='';'Phone2'='';'Phone3'='';'Phone4'='';'Note'=''}
+    return [PSCustomObject][ordered]@{'Full Name'="";'Categories'='';'Organization'='';'Address'='';'Phone1'='';'Phone2'='';'Phone3'='';'Phone4'='';'Email1'='';'Email2'='';'Email3'='';'Email4'='';'Note'=''}
 }
 
 
@@ -14,6 +14,7 @@ foreach ($line in $content) {
         $state = 'in'
         $cardCount++;
         $telephones = 0;
+        $emails = 0;
         $currentCard = New-Card
         continue;
     }
@@ -47,6 +48,11 @@ foreach ($line in $content) {
         $telephones++;
         $tokens = $line -split ":"
         $currentCard."Phone$telephones" = (($tokens[1] -split ';') -join "`n") -replace "\\,", ","
+    }
+    if ($line -match "Email;") {
+        $emails++;
+        $tokens = $line -split ":"
+        $currentCard."Email$emails" = (($tokens[1] -split ';') -join "`n") -replace "\\,", ","
     }
 
     if ($line -match "NOTE:") {

@@ -1,4 +1,4 @@
-#originally created by dmarkle/ConvertFrom-Vcf
+# originally created by dmarkle/ConvertFrom-Vcf
 
 This version of this script is setup to automatically create CSV files from any .vcf files within a folder.
 The CSV files that this script outputs are compatible for an immediate upload to Outlook on the Web.

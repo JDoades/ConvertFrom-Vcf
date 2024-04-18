@@ -49,6 +49,7 @@ function Generate-CSVFromContactFile($filename){
         if ($line -match "TEL;") {
             $telephones++;
             $tokens = $line -split ":"
+            $tokens[1] = ($tokens[1] -replace "\+44" , "0")
             switch ($telephones) {
                 1 {$telephonecolumnname = "Mobile Phone"}
                 2 {$telephonecolumnname = "Business Phone"}
@@ -56,7 +57,8 @@ function Generate-CSVFromContactFile($filename){
                 4 {$telephonecolumnname = "Home Phone"}
                 default{}
                 }
-                $currentCard.$telephonecolumnname = (($tokens[1] -split ';') -join "`n") -replace "\\,", ","
+                $currentCard.$telephonecolumnname = (((($tokens[1] -split ';') -join "`n") -replace "\\,", "," ) -replace "\+44" , "0")
+                
             
         }
         if ($line -match "Email;") {
@@ -100,7 +102,7 @@ foreach ($file in $files) {
      Generate-CSVFromContactFile($file.FullName) | Export-Csv $outboundfile -NoTypeInformation
     
      Rename-Item -Path $file.FullName -NewName $renamedfile
-     write-host "completed $file.FullName"
+     write-host "completed $file"
 }
 
 Start-Sleep -Seconds 5

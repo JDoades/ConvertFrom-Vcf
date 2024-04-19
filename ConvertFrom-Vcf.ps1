@@ -105,9 +105,39 @@ function AddSpaceAfterFiveChars {
     return $outputString
 }
 
-do{
 
+# Path to the folder
+$folderPath = "C:\contact-conversion"
+
+# Check if the folder already exists
+if (-not (Test-Path -Path $folderPath -PathType Container)) {
+    # If the folder doesn't exist, create it
+    New-Item -Path $folderPath -ItemType Directory
+    
+    New-Item -Path "$folderPath\inbound" -ItemType Directory
+    
+    New-Item -Path "$folderPath\outbound" -ItemType Directory
+    Write-Output "Folder structure created successfully at $folderPath."
+} else {
+    Write-Output "Folder already exists at $folderPath."
+}
+
+
+
+
+do{
 $ErrorActionPreference = "Stop"
+
+
+
+
+
+
+
+
+
+
+
 
 $files = Get-ChildItem "C:\contact-conversion\inbound\*" -include *.vcf
 

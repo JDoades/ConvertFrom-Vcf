@@ -50,6 +50,8 @@ function Generate-CSVFromContactFile($filename){
             $telephones++;
             $tokens = $line -split ":"
             $tokens[1] = ($tokens[1] -replace "\+44" , "0")
+			$tokens[1] = (((($tokens[1] -split ';') -join "`n") -replace "\\,", "," ) -replace "\+44" , "0")
+			$tokens[1] = AddSpaceAfterFiveChars $tokens[1]
             switch ($telephones) {
                 1 {$telephonecolumnname = "Mobile Phone"}
                 2 {$telephonecolumnname = "Business Phone"}
@@ -57,7 +59,7 @@ function Generate-CSVFromContactFile($filename){
                 4 {$telephonecolumnname = "Home Phone"}
                 default{}
                 }
-                $currentCard.$telephonecolumnname = (((($tokens[1] -split ';') -join "`n") -replace "\\,", "," ) -replace "\+44" , "0")
+                $currentCard.$telephonecolumnname = $tokens[1]
                 
             
         }
@@ -87,6 +89,21 @@ function Generate-CSVFromContactFile($filename){
     }
 }
 
+function AddSpaceAfterFiveChars {
+    param(
+        [string]$inputString
+    )
+
+    # Check if the string length is greater than 5 and if the 6th character is not a space
+    if ($inputString.Length -gt 5 -and $inputString[5] -ne ' ') {
+        # Insert a space after the 5th character
+        $outputString = $inputString.Insert(5, ' ')
+    } else {
+        $outputString = $inputString
+    }
+
+    return $outputString
+}
 
 do{
 
